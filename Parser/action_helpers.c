@@ -1530,7 +1530,13 @@ expr_ty _PyPegen_interpolation(Parser *p, expr_ty expression, Token *debug, Resu
     }
 
     assert(exprstr != NULL);
-    PyObject *final_exprstr = _strip_interpolation_expr(exprstr);
+    PyObject *final_exprstr;
+    if (debug) {
+        final_exprstr = _strip_interpolation_expr(exprstr);
+    }
+    else {
+        final_exprstr = Py_NewRef(exprstr);
+    }
     if (!final_exprstr || _PyArena_AddPyObject(arena, final_exprstr) < 0) {
         Py_XDECREF(final_exprstr);
         return NULL;

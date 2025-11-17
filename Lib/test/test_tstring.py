@@ -79,6 +79,21 @@ class TestTString(unittest.TestCase, TStringBaseCase):
         )
         self.assertEqual(fstring(t), "Name: Bob, Age: 30")
 
+    def test_interpolation_preserves_whitespace(self):
+        value = 7
+
+        t = t"{ value }"
+        self.assertTStringEqual(t, ("", ""), [(value, " value ")])
+
+        t = t"{ value  }"
+        self.assertTStringEqual(t, ("", ""), [(value, " value  ")])
+
+        t = t"{ value :.2f}"
+        self.assertTStringEqual(
+            t, ("", ""), [(value, " value ", None, ".2f")]
+        )
+
+
     def test_format_specifiers(self):
         # Test basic format specifiers
         value = 3.14159
